@@ -15,7 +15,15 @@ RUN apt-get update && apt-get install -y docker.io
 RUN groupadd docker || true
 RUN usermod -aG docker jenkins
 
-RUN curl -Lo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-linux-x64.zip \
+# Node.js 18 ekle
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs
+
+# Yarn ekle
+RUN npm install -g yarn
+
+# SonarQube Scanner kur
+RUN curl -Lo /tmp/sonar-scanner-cli.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-6.1.0.4477-linux-x64.zip  \
     && unzip /tmp/sonar-scanner-cli.zip -d /opt \
     && mv /opt/sonar-scanner-6.1.0.4477-linux-x64 /opt/sonar-scanner \
     && ln -s /opt/sonar-scanner/bin/sonar-scanner /usr/local/bin/sonar-scanner
